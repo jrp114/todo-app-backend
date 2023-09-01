@@ -38,9 +38,6 @@ module.exports = class TodosRepository {
     );
   }
   async updateTodo(params) {
-    // return this.db.oneOrNone('UPDATE todos SET name=${params.name},description=${params.description},status=${params.status} WHERE id = ${params.id}', {
-    //     params
-    // })
     return this.db.one(
       this.pgp.helpers.update(params, this.updateCS) +
         `WHERE id = ${params.id} RETURNING *;`,
