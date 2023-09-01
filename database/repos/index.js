@@ -1,5 +1,5 @@
-const TodosRepository = require("./todos-repository");
+const TodosRepository = require('./todos-repository');
 
 module.exports = {
-    TodosRepository
-}
+  TodosRepository,
+};
