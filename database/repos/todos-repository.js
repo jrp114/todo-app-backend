@@ -17,6 +17,11 @@ module.exports = class TodosRepository {
           name: 'status',
           prop: 'status',
         },
+        {
+          name: 'tags',
+          prop: 'tags',
+          def: null,
+        },
       ],
       {
         table,
@@ -40,7 +45,7 @@ module.exports = class TodosRepository {
   async updateTodo(params) {
     return this.db.one(
       this.pgp.helpers.update(params, this.updateCS) +
-        `WHERE id = ${params.id} RETURNING *;`,
+        ` WHERE id = ${params.id} RETURNING *;`,
     );
   }
   async remove(id) {
