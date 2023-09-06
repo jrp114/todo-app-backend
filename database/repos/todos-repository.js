@@ -1,3 +1,5 @@
+const { todos: sql } = require('../sql');
+
 module.exports = class TodosRepository {
   constructor(db, pgp) {
     const table = new pgp.helpers.TableName('todos');
@@ -30,12 +32,10 @@ module.exports = class TodosRepository {
     this.updateCS = this.insertCS.extend([{ name: 'id', cnd: true }]);
   }
   async get() {
-    return this.db.manyOrNone('SELECT * FROM todos');
+    return this.db.manyOrNone(sql.get);
   }
   async getStatus(status) {
-    return this.db.manyOrNone('SELECT * FROM todos WHERE status = $1', [
-      status,
-    ]);
+    return this.db.manyOrNone(sql.getStatus, [status]);
   }
   async add(params) {
     return this.db.one(
@@ -49,6 +49,13 @@ module.exports = class TodosRepository {
     );
   }
   async remove(id) {
-    return this.db.oneOrNone('DELETE FROM todos WHERE id=$1', [id]);
+    return this.db.oneOrNone(sql.delete, [id]);
+  }
+  async filterByTag(value) {
+    const result = await this.db.manyOrNone(sql.filterByTag, [
+      value,
+      `%${value}%`,
+    ]);
+    return result;
   }
 };

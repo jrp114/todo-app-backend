@@ -32,4 +32,12 @@ router
     res.status(201).send(todo);
   });
 
+router.route('/filter').get(async (req, res) => {
+  console.log(req.query);
+  const all = await db.todos.filterByTag(req.query.value);
+  // const all = await db.todos.get();
+  console.log(all);
+  res.status(200).send(all);
+});
+
 module.exports = router;
