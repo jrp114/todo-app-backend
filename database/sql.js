@@ -11,4 +11,8 @@ module.exports = {
     getStatus: 'SELECT * FROM todos WHERE status = $1',
     get: 'SELECT * FROM todos',
   },
+  comments: {
+    getByTodo: 'SELECT * FROM comments WHERE todo_id=$1',
+    delete: 'DELETE FROM comments WHERE id=$1',
+  },
 };

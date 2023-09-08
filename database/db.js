@@ -1,9 +1,11 @@
 const PgPromise = require('pg-promise');
 const { TodosRepository } = require('./repos');
+const { CommentsRepository } = require('./repos');
 
 const initOptions = {
   extend(obj) {
     obj.todos = new TodosRepository(obj, pgp);
+    obj.comments = new CommentsRepository(obj, pgp);
   },
 };
 
