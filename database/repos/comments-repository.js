@@ -14,6 +14,7 @@ module.exports = class CommentsRepository {
         {
           name: 'todo_id',
           prop: 'todo_id',
+          skip: (e) => !e.todo_id,
         },
       ],
       {
