@@ -12,7 +12,7 @@ module.exports = {
     get: 'SELECT * FROM todos',
   },
   comments: {
-    getByTodo: 'SELECT * FROM comments WHERE todo_id=$1',
+    getByTodo: 'SELECT * FROM comments WHERE todo_id=$1 ORDER BY id DESC',
     delete: 'DELETE FROM comments WHERE id=$1',
   },
 };
