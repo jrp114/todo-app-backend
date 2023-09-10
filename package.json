@@ -8,7 +8,7 @@
     "db-create": "db-migrate create",
     "db-up": "db-migrate up",
     "db-down": "db-migrate down",
-    "dev": "nodemon server.js"
+    "dev": "PORT=8501 POSTGRES_USER=postgres POSTGRES_PASSWORD=postgres POSTGRES_PASSWORD=postgres POSTGRES_PORT=5492 POSTGRES_NAME=postgres nodemon server.js"
   },
   "keywords": [],
   "author": "",
