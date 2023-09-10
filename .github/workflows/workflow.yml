@@ -11,6 +11,14 @@ jobs:
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         run: heroku container:login
+      - name: Build Docker Image
+        run: |
+          docker build -t ${{ secrets.HEROKU_APP_NAME }} .
+        working-directory: /
+      - name: Tag Docker Image
+        run: |
+          docker tag ${{ secrets.HEROKU_APP_NAME }} registry.heroku.com/${{ secrets.HEROKU_APP_NAME }}/web
+        working-directory: /
       - name: Build and push
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
