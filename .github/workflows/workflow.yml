@@ -17,7 +17,7 @@ jobs:
         working-directory: ./
       - name: Tag Docker Image
         run: |
-          docker tag ${{ secrets.HEROKU_APP_NAME }} registry.heroku.com/${{ secrets.HEROKU_APP_NAME }}
+          docker tag ${{ secrets.HEROKU_APP_NAME }} registry.heroku.com/${{ secrets.HEROKU_APP_NAME }}/web
         working-directory: ./
       - name: Build and push
         env:
