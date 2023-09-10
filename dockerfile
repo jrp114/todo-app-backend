@@ -13,8 +13,5 @@ COPY . .
 # Expose port 3000
 EXPOSE 3000
 
-# Migrate database
-RUN npm run db-up
-
 # Run the app
 CMD [ "npm", "start" ]
