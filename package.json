@@ -4,12 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "npm run db-up -e heroku-dev && node server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "db-create": "db-migrate create",
     "db-up": "db-migrate up",
     "db-down": "db-migrate down",
-    "dev": "PORT=8501 POSTGRES_USER=postgres POSTGRES_PASSWORD=postgres POSTGRES_PASSWORD=postgres POSTGRES_PORT=5492 POSTGRES_NAME=postgres nodemon server.js",
-    "heroku-postbuild": "echo Post Run && npm run db-up -e heroku-dev"
+    "dev": "PORT=8501 POSTGRES_USER=postgres POSTGRES_PASSWORD=postgres POSTGRES_PASSWORD=postgres POSTGRES_PORT=5492 POSTGRES_NAME=postgres nodemon server.js"
   },
   "keywords": [],
   "author": "",
