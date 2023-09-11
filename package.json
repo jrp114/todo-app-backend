@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "npm run db-up -e heroku-dev && node server.js",
+    "start": "npm run db-up --config ./database.json -e heroku-dev && node server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "db-create": "db-migrate create",
     "db-up": "db-migrate up",
