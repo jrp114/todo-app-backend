@@ -9,7 +9,7 @@
     "db-up": "db-migrate up",
     "db-down": "db-migrate down",
     "dev": "PORT=8501 POSTGRES_USER=postgres POSTGRES_PASSWORD=postgres POSTGRES_PASSWORD=postgres POSTGRES_PORT=5492 POSTGRES_NAME=postgres nodemon server.js",
-    "heroku-postbuild": "npm run db-up --e heroku-dev"
+    "heroku-postbuild": "echo Post Run && npm run db-up -e heroku-dev"
   },
   "keywords": [],
   "author": "",
