@@ -5,6 +5,9 @@
     "database": { "ENV": "POSTGRES_NAME" },
     "user": { "ENV": "POSTGRES_USER" },
     "password": { "ENV": "POSTGRES_PASSWORD" },
-    "port": { "ENV": "POSTGRES_PORT" }
+    "port": { "ENV": "POSTGRES_PORT" },
+    "ssl": {
+      "rejectUnauthorized": false
+    }
   }
 }
