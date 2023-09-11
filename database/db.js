@@ -17,11 +17,8 @@ const dbConfig = {
   database: process.env.POSTGRES_NAME,
   user: process.env.POSTGRES_USER,
   password: process.env.POSTGRES_PASSWORD,
-  ssl: true,
-  extra: {
-    ssl: {
-      rejectUnauthorized: false,
-    },
+  ssl: {
+    rejectUnauthorized: false,
   },
 };
 
