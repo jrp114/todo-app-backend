@@ -11,6 +11,7 @@ module.exports = class UsersRepository {
           name: 'name',
           prop: 'name',
           skip: (e) => !e.name,
+          def: null,
         },
         {
           name: 'email',

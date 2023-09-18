@@ -4,12 +4,30 @@ const db = require('../database/db');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
+const createSession = (user) => {
+  const token = jwt.sign(
+    { email: user.email, name: user.name, hash: user.hash },
+    process.env.JWT_SECRET,
+    {
+      expiresIn: 86400,
+    },
+  );
+  return {
+    auth: true,
+    userId: user.id,
+    token: token,
+    email: user.email,
+    name: user.name,
+  };
+};
+
 router.route('/').post(async (req, res) => {
   req.body.salt = bcrypt.genSaltSync(10);
   req.body.hash = bcrypt.hashSync(req.body.password, req.body.salt);
   delete req.body.password;
   const user = await db.users.add(req.body);
-  res.status(201).send(user);
+  const session = createSession(user);
+  res.status(201).send(session);
 });
 
 router.route('/login').post(async (req, res) => {
@@ -19,22 +37,8 @@ router.route('/login').post(async (req, res) => {
   } else {
     const hash = bcrypt.hashSync(req.body.password, user.salt);
     if (hash === user.hash) {
-      const token = jwt.sign(
-        { email: user.email, name: user.name, hash: user.hash },
-        process.env.JWT_SECRET,
-        {
-          expiresIn: 86400,
-        },
-      );
-      res
-        .status(200)
-        .send({
-          auth: true,
-          userId: user.id,
-          token: token,
-          email: user.email,
-          name: user.name,
-        });
+      const session = createSession(user);
+      res.status(201).send(session);
     } else {
       res.status(401).send('Invalid email or password');
     }
