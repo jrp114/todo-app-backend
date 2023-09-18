@@ -15,4 +15,7 @@ module.exports = {
     getByTodo: 'SELECT * FROM comments WHERE todo_id=$1 ORDER BY id DESC',
     delete: 'DELETE FROM comments WHERE id=$1',
   },
+  users: {
+    getByEmail: 'SELECT * FROM users WHERE email=$1',
+  },
 };

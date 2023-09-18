@@ -1,38 +1,39 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../database/db');
+const authorize = require('../helpers/authorize');
 
 router
   .route('/')
-  .get(async (req, res) => {
+  .get(authorize(), async (req, res) => {
     const all = await db.todos.get();
     res.status(200).send(all);
   })
-  .post(async (req, res) => {
+  .post(authorize(), async (req, res) => {
     const todo = await db.todos.add(req.body);
     res.status(201).send(todo);
   });
 
-router.route('/status').get(async (req, res) => {
+router.route('/status').get(authorize(), async (req, res) => {
   const all = await db.todos.getStatus(req.query.status);
   res.status(200).send(all);
 });
 
 router
   .route('/:id')
-  .put(async (req, res) => {
+  .put(authorize(), async (req, res) => {
     const todo = await db.todos.updateTodo({
       ...req.body,
       id: req.params.id,
     });
     res.status(201).send(todo);
   })
-  .delete(async (req, res) => {
+  .delete(authorize(), async (req, res) => {
     const todo = await db.todos.remove(req.params.id);
     res.status(201).send(todo);
   });
 
-router.route('/filter').get(async (req, res) => {
+router.route('/filter').get(authorize(), async (req, res) => {
   const all = await db.todos.filterByTag(req.query.value);
   res.status(200).send(all);
 });
