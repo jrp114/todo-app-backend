@@ -22,12 +22,16 @@ const createSession = (user) => {
 };
 
 router.route('/').post(async (req, res) => {
-  req.body.salt = bcrypt.genSaltSync(10);
-  req.body.hash = bcrypt.hashSync(req.body.password, req.body.salt);
-  delete req.body.password;
-  const user = await db.users.add(req.body);
-  const session = createSession(user);
-  res.status(201).send(session);
+  try {
+    req.body.salt = bcrypt.genSaltSync(10);
+    req.body.hash = bcrypt.hashSync(req.body.password, req.body.salt);
+    delete req.body.password;
+    const user = await db.users.add(req.body);
+    const session = createSession(user);
+    res.status(201).send(session);
+  } catch (err) {
+    res.status(400).send(err.message);
+  }
 });
 
 router.route('/login').post(async (req, res) => {
