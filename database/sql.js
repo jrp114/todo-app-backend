@@ -6,7 +6,7 @@ module.exports = {
             SELECT id, unnest(tags) AS tag
             FROM todos
           ) AS subquery
-          WHERE tag ILIKE $2 OR description ILIKE $2 OR name ILIKE $1)`,
+          WHERE tag ILIKE $1 OR description ILIKE $1 OR name ILIKE $1)`,
     delete: 'DELETE FROM todos WHERE id=$1',
     getStatus: 'SELECT * FROM todos WHERE status = $1',
     get: 'SELECT * FROM todos',

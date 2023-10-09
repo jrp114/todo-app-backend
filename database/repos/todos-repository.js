@@ -52,10 +52,7 @@ module.exports = class TodosRepository {
     return this.db.oneOrNone(sql.delete, [id]);
   }
   async filterByTag(value) {
-    const result = await this.db.manyOrNone(sql.filterByTag, [
-      value,
-      `%${value}%`,
-    ]);
+    const result = await this.db.manyOrNone(sql.filterByTag, [`%${value}%`]);
     return result;
   }
 };
