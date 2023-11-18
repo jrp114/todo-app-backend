@@ -1,6 +1,6 @@
-const express = require('express');
-const cors = require('cors');
-const { todos, comments, users } = require('./routes');
+import cors from 'cors';
+import express from 'express';
+import { comments, todos, users } from './routes';
 
 const port = process.env.PORT;
 

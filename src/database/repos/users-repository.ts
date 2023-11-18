@@ -1,7 +1,12 @@
-const { users: sql } = require('../sql');
+import { ColumnSet, IDatabase, IMain } from 'pg-promise';
+import { Extensions } from '.';
+import { users as sql } from '../sql';
 
-module.exports = class UsersRepository {
-  constructor(db, pgp) {
+export default class UsersRepository {
+  private insertCS: ColumnSet;
+  private updateCS: ColumnSet;
+
+  constructor(private db: IDatabase<Extensions>, private pgp: IMain) {
     const table = new pgp.helpers.TableName('users');
     this.db = db;
     this.pgp = pgp;
@@ -10,23 +15,23 @@ module.exports = class UsersRepository {
         {
           name: 'name',
           prop: 'name',
-          skip: (e) => !e.name,
+          skip: (e: any) => !e.name,
           def: null,
         },
         {
           name: 'email',
           prop: 'email',
-          skip: (e) => !e.email,
+          skip: (e: any) => !e.email,
         },
         {
           name: 'hash',
           prop: 'hash',
-          skip: (e) => !e.hash,
+          skip: (e: any) => !e.hash,
         },
         {
           name: 'salt',
           prop: 'salt',
-          skip: (e) => !e.salt,
+          skip: (e: any) => !e.salt,
         },
       ],
       {
@@ -35,12 +40,12 @@ module.exports = class UsersRepository {
     );
     this.updateCS = this.insertCS.extend([{ name: 'id', cnd: true }]);
   }
-  async getByEmail(email) {
+  async getByEmail(email: string) {
     return this.db.oneOrNone(sql.getByEmail, [email]);
   }
-  async add(params) {
+  async add(params: any) {
     return this.db.one(
       this.pgp.helpers.insert(params, this.insertCS) + ' RETURNING *;',
     );
   }
-};
+}

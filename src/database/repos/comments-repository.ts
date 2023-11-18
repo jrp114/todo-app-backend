@@ -1,7 +1,12 @@
-const { comments: sql } = require('../sql');
+import { ColumnSet, IDatabase, IMain } from 'pg-promise';
+import { Extensions } from '.';
+import { comments as sql } from '../sql';
 
-module.exports = class CommentsRepository {
-  constructor(db, pgp) {
+export default class CommentsRepository {
+  private insertCS: ColumnSet;
+  private updateCS: ColumnSet;
+
+  constructor(private db: IDatabase<Extensions>, private pgp: IMain) {
     const table = new pgp.helpers.TableName('comments');
     this.db = db;
     this.pgp = pgp;
@@ -14,7 +19,7 @@ module.exports = class CommentsRepository {
         {
           name: 'todo_id',
           prop: 'todo_id',
-          skip: (e) => !e.todo_id,
+          skip: (e: any) => !e.todo_id,
         },
       ],
       {
@@ -23,21 +28,21 @@ module.exports = class CommentsRepository {
     );
     this.updateCS = this.insertCS.extend([{ name: 'id', cnd: true }]);
   }
-  async getByTodo(id) {
+  async getByTodo(id: any) {
     return this.db.manyOrNone(sql.getByTodo, [id]);
   }
-  async add(params) {
+  async add(params: any) {
     return this.db.one(
       this.pgp.helpers.insert(params, this.insertCS) + ' RETURNING *;',
     );
   }
-  async updateComment(params) {
+  async updateComment(params: any) {
     return this.db.one(
       this.pgp.helpers.update(params, this.updateCS) +
         ` WHERE id = ${params.id} RETURNING *;`,
     );
   }
-  async remove(id) {
+  async remove(id: any) {
     return this.db.oneOrNone(sql.delete, [id]);
   }
-};
+}

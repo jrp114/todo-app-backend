@@ -1,12 +1,13 @@
-const PgPromise = require('pg-promise');
-const {
-  TodosRepository,
+import PgPromise from 'pg-promise';
+import {
   CommentsRepository,
+  Extensions,
+  TodosRepository,
   UsersRepository,
-} = require('./repos');
+} from './repos';
 
 const initOptions = {
-  extend(obj) {
+  extend(obj: PgPromise.IDatabase<Extensions> & Extensions) {
     obj.todos = new TodosRepository(obj, pgp);
     obj.comments = new CommentsRepository(obj, pgp);
     obj.users = new UsersRepository(obj, pgp);
@@ -31,6 +32,7 @@ const dbConfig = {
   ssl,
 };
 
-const db = pgp(dbConfig);
+const url = `postgres://${dbConfig.user}:${dbConfig.password}@${dbConfig.host}:${dbConfig.port}/${dbConfig.database}?options=-c%20search_path%3Dpublic`;
+const db = pgp(url);
 
-module.exports = db;
+export default db;
