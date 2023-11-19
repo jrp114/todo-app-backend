@@ -32,7 +32,9 @@ const dbConfig = {
   ssl,
 };
 
-const url = `postgres://${dbConfig.user}:${dbConfig.password}@${dbConfig.host}:${dbConfig.port}/${dbConfig.database}?options=-c%20search_path%3Dpublic&sslmode=require`;
-const db = pgp(url);
+const url = `postgres://${dbConfig.user}:${dbConfig.password}@${dbConfig.host}:${dbConfig.port}/${dbConfig.database}?options=-c%20search_path%3Dpublic`;
+const db = pgp(url, {
+  ssl,
+});
 
 export default db;
