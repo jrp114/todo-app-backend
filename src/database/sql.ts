@@ -12,7 +12,11 @@ export const todos = {
           WHERE tag ILIKE $1 OR description ILIKE $1 OR name ILIKE $1)`,
   delete: 'DELETE FROM todos WHERE id=$1',
   getStatus: 'SELECT * FROM todos WHERE status = $1',
-  get: 'SELECT * FROM todos',
+  get: 'SELECT * FROM todos ORDER BY position ASC',
+  movePosition:
+    'UPDATE todos SET position = position + 1 WHERE status = $2 AND position >= $1;',
+  movePositionDown:
+    'UPDATE todos SET position = position - 1 WHERE status = $2 AND position <= $1;',
 };
 export const users = {
   getByEmail: 'SELECT * FROM users WHERE email=$1',

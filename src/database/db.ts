@@ -12,6 +12,10 @@ const initOptions = {
     obj.comments = new CommentsRepository(obj, pgp);
     obj.users = new UsersRepository(obj, pgp);
   },
+  // uncomment to log all queries
+  // query(e: any) {
+  // console.log(e.query);
+  // },
 };
 
 const pgp = PgPromise(initOptions);
@@ -33,8 +37,6 @@ const dbConfig = {
 };
 
 const url = `postgres://${dbConfig.user}:${dbConfig.password}@${dbConfig.host}:${dbConfig.port}/${dbConfig.database}?options=-c%20search_path%3Dpublic`;
-const db = pgp(url, {
-  ssl,
-});
+const db = pgp(url);
 
 export default db;

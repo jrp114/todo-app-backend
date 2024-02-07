@@ -25,9 +25,27 @@ router
 router
   .route('/:id')
   .put(authorize(), async (req: Request, res: Response) => {
-    const todo = await db.todos.updateTodo({
-      ...req.body,
-      id: req.params.id,
+    const todo = await db.task(async (task) => {
+      if (req.body.origin !== req.body.status) {
+        // we need the rest of the todos within the same status to move order up by one
+        await task.todos.movePosition(req.body.position, req.body.status);
+        return task.todos.updateTodo({
+          ...req.body,
+          position: req.body.position || 0,
+        });
+      } else {
+        if (req.body.originalPosition > req.body.position) {
+          // we need the rest of the todos within the same status to move order up by one
+          await task.todos.movePosition(req.body.position, req.body.status);
+        } else {
+          // we need the rest of the todos within the same status to move order down by one
+          await task.todos.movePositionDown(req.body.position, req.body.status);
+        }
+        return task.todos.updateTodo({
+          ...req.body,
+          position: req.body.position || 0,
+        });
+      }
     });
     res.status(201).send(todo);
   })

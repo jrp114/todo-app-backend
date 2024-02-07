@@ -29,6 +29,11 @@ export default class TodosRepository {
           prop: 'tags',
           def: null,
         },
+        {
+          name: 'position',
+          prop: 'position',
+          skip: (e) => !e.exists,
+        },
       ],
       {
         table,
@@ -59,5 +64,11 @@ export default class TodosRepository {
   async filterByTag(value: any) {
     const result = await this.db.manyOrNone(sql.filterByTag, [`%${value}%`]);
     return result;
+  }
+  async movePosition(position: any, status: any) {
+    return this.db.none(sql.movePosition, [position || 0, status]);
+  }
+  async movePositionDown(position: any, status: any) {
+    return this.db.none(sql.movePositionDown, [position || 0, status]);
   }
 }
