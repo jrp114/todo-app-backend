@@ -1,5 +1,5 @@
-import comments from './comments';
-import todos from './todos';
-import users from './users';
+import comments from './comments/routes';
+import todos from './todos/routes';
+import users from './users/routes';
 
 export { comments, todos, users };
