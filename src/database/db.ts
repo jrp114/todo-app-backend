@@ -12,9 +12,9 @@ const initOptions = {
     obj.comments = new CommentsRepository(obj, pgp);
     obj.users = new UsersRepository(obj, pgp);
   },
-  // uncomment to log all queries
+  // // uncomment to log all queries
   // query(e: any) {
-  // console.log(e.query);
+  //   console.log(e.query);
   // },
 };
 

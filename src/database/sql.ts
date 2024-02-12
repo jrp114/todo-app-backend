@@ -17,6 +17,8 @@ export const todos = {
     'UPDATE todos SET position = position + 1 WHERE status = $2 AND position >= $1;',
   movePositionDown:
     'UPDATE todos SET position = position - 1 WHERE status = $2 AND position <= $1;',
+  findLast:
+    'SELECT * FROM todos WHERE status = $1 ORDER BY position DESC LIMIT 1',
 };
 export const users = {
   getByEmail: 'SELECT * FROM users WHERE email=$1',

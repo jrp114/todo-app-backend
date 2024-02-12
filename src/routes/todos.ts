@@ -11,6 +11,8 @@ router
     res.status(200).send(all);
   })
   .post(authorize(), async (req: Request, res: Response) => {
+    const last = await db.todos.findLast('todo');
+    req.body.position = last.position + 1;
     const todo = await db.todos.add(req.body);
     res.status(201).send(todo);
   });

@@ -71,4 +71,7 @@ export default class TodosRepository {
   async movePositionDown(position: any, status: any) {
     return this.db.none(sql.movePositionDown, [position || 0, status]);
   }
+  async findLast(status: any) {
+    return this.db.oneOrNone(sql.findLast, [status]);
+  }
 }
