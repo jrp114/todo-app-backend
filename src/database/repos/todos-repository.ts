@@ -34,6 +34,11 @@ export default class TodosRepository {
           prop: 'position',
           skip: (e) => !e.exists,
         },
+        {
+          name: 'account_id',
+          prop: 'accountId',
+          skip: (e) => !e.exists,
+        },
       ],
       {
         table,
@@ -41,8 +46,8 @@ export default class TodosRepository {
     );
     this.updateCS = this.insertCS.extend([{ name: 'id', cnd: true }]);
   }
-  async get() {
-    return this.db.manyOrNone(sql.get);
+  async get(accountId: string) {
+    return this.db.manyOrNone(sql.get, [accountId]);
   }
   async getStatus(status: any) {
     return this.db.manyOrNone(sql.getStatus, [status]);
@@ -61,8 +66,11 @@ export default class TodosRepository {
   async remove(id: any) {
     return this.db.oneOrNone(sql.delete, [id]);
   }
-  async filterByTag(value: any) {
-    const result = await this.db.manyOrNone(sql.filterByTag, [`%${value}%`]);
+  async filterByTag(value: any, accountId: string) {
+    const result = await this.db.manyOrNone(sql.filterByTag, [
+      `%${value}%`,
+      accountId,
+    ]);
     return result;
   }
   async movePosition(position: any, status: any) {
@@ -71,7 +79,7 @@ export default class TodosRepository {
   async movePositionDown(position: any, status: any) {
     return this.db.none(sql.movePositionDown, [position || 0, status]);
   }
-  async findLast(status: any) {
-    return this.db.oneOrNone(sql.findLast, [status]);
+  async findLast(status: any, accountId: number) {
+    return this.db.oneOrNone(sql.findLast, [status, accountId]);
   }
 }

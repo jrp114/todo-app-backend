@@ -1,3 +1,4 @@
+import * as dotenv from 'dotenv';
 import PgPromise from 'pg-promise';
 import {
   CommentsRepository,
@@ -5,12 +6,16 @@ import {
   TodosRepository,
   UsersRepository,
 } from './repos';
+import AccountsRepository from './repos/accounts-repository';
+
+dotenv.config();
 
 const initOptions = {
   extend(obj: PgPromise.IDatabase<Extensions> & Extensions) {
     obj.todos = new TodosRepository(obj, pgp);
     obj.comments = new CommentsRepository(obj, pgp);
     obj.users = new UsersRepository(obj, pgp);
+    obj.accounts = new AccountsRepository(obj, pgp);
   },
   // // uncomment to log all queries
   // query(e: any) {

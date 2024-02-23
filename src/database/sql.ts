@@ -9,16 +9,16 @@ export const todos = {
             SELECT id, unnest(tags) AS tag
             FROM todos
           ) AS subquery
-          WHERE tag ILIKE $1 OR description ILIKE $1 OR name ILIKE $1)`,
+          WHERE tag ILIKE $1 OR description ILIKE $1 OR name ILIKE $1) AND account_id = $2`,
   delete: 'DELETE FROM todos WHERE id=$1',
   getStatus: 'SELECT * FROM todos WHERE status = $1',
-  get: 'SELECT * FROM todos ORDER BY position ASC',
+  get: 'SELECT * FROM todos WHERE account_id = $1 ORDER BY position ASC',
   movePosition:
     'UPDATE todos SET position = position + 1 WHERE status = $2 AND position >= $1;',
   movePositionDown:
     'UPDATE todos SET position = position - 1 WHERE status = $2 AND position <= $1;',
   findLast:
-    'SELECT * FROM todos WHERE status = $1 ORDER BY position DESC LIMIT 1',
+    'SELECT * FROM todos WHERE status = $1 AND account_id = $2 ORDER BY position DESC LIMIT 1',
 };
 export const users = {
   getByEmail: 'SELECT * FROM users WHERE email=$1',

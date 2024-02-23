@@ -33,6 +33,11 @@ export default class UsersRepository {
           prop: 'salt',
           skip: (e: any) => !e.salt,
         },
+        {
+          name: 'account_id',
+          prop: 'account_id',
+          skip: (e: any) => !e.exists,
+        },
       ],
       {
         table,

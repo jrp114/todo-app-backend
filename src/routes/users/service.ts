@@ -17,6 +17,7 @@ const createSession = (user: any) => {
     token,
     email: user.email,
     name: user.name,
+    accountId: user.account_id,
   };
 };
 
@@ -25,6 +26,12 @@ export async function addUser(req: Request, res: Response) {
     req.body.salt = bcrypt.genSaltSync(10);
     req.body.hash = bcrypt.hashSync(req.body.password, req.body.salt);
     delete req.body.password;
+    // TODO: separate the account creation from the user creation
+    // allow the initial user to specify the account name
+    // create new route to handle initial user creating new users under the account
+    // give user priveleges to create new users under the account (admin, user, etc.)
+    const account = await db.accounts.add(req.body.email);
+    req.body.account_id = account.id;
     const user = await db.users.add(req.body);
     const session = createSession(user);
     res.status(201).send(session);

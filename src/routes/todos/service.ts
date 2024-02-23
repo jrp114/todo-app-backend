@@ -2,15 +2,23 @@ import { Request, Response } from 'express';
 import db from '../../database/db';
 
 export async function getTodos(req: Request, res: Response) {
-  const all = await db.todos.get();
+  const all = await db.todos.get(req.query.accountId as string);
   res.status(200).send(all);
 }
 
 export async function addTodo(req: Request, res: Response) {
-  const last = await db.todos.findLast('todo');
-  req.body.position = last.position + 1;
-  const todo = await db.todos.add(req.body);
-  res.status(201).send(todo);
+  try {
+    const last = await db.todos.findLast('todo', req.body.accountId);
+    if (!last) {
+      req.body.position = 0;
+    } else {
+      req.body.position = last.position + 1;
+    }
+    const todo = await db.todos.add(req.body);
+    res.status(201).send(todo);
+  } catch (err) {
+    res.status(500).send('Error adding todo');
+  }
 }
 
 export async function getTodoStatus(req: Request, res: Response) {
@@ -50,6 +58,9 @@ export async function deleteTodo(req: Request, res: Response) {
 }
 
 export async function filterByTag(req: Request, res: Response) {
-  const all = await db.todos.filterByTag(req.query.value);
+  const all = await db.todos.filterByTag(
+    req.query.value,
+    req.query.accountId as string,
+  );
   res.status(200).send(all);
 }
