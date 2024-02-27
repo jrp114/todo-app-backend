@@ -21,10 +21,6 @@ export default class TodosRepository {
           prop: 'description',
         },
         {
-          name: 'status',
-          prop: 'status',
-        },
-        {
           name: 'tags',
           prop: 'tags',
           def: null,
@@ -35,8 +31,8 @@ export default class TodosRepository {
           skip: (e) => !e.exists,
         },
         {
-          name: 'account_id',
-          prop: 'accountId',
+          name: 'project_id',
+          prop: 'projectId',
           skip: (e) => !e.exists,
         },
       ],
@@ -46,11 +42,8 @@ export default class TodosRepository {
     );
     this.updateCS = this.insertCS.extend([{ name: 'id', cnd: true }]);
   }
-  async get(accountId: string) {
-    return this.db.manyOrNone(sql.get, [accountId]);
-  }
-  async getStatus(status: any) {
-    return this.db.manyOrNone(sql.getStatus, [status]);
+  async get(projectId: string) {
+    return this.db.manyOrNone(sql.get, [projectId]);
   }
   async add(params: any) {
     return this.db.one(
@@ -66,20 +59,20 @@ export default class TodosRepository {
   async remove(id: any) {
     return this.db.oneOrNone(sql.delete, [id]);
   }
-  async filterByTag(value: any, accountId: string) {
+  async filterByTag(value: any, projectId: string) {
     const result = await this.db.manyOrNone(sql.filterByTag, [
       `%${value}%`,
-      accountId,
+      projectId,
     ]);
     return result;
   }
-  async movePosition(position: any, status: any) {
-    return this.db.none(sql.movePosition, [position || 0, status]);
+  async movePosition(position: any, projectId: any) {
+    return this.db.none(sql.movePosition, [position || 0, projectId]);
   }
-  async movePositionDown(position: any, status: any) {
-    return this.db.none(sql.movePositionDown, [position || 0, status]);
+  async movePositionDown(position: any, projectId: any) {
+    return this.db.none(sql.movePositionDown, [position || 0, projectId]);
   }
-  async findLast(status: any, accountId: number) {
-    return this.db.oneOrNone(sql.findLast, [status, accountId]);
+  async findLast(projectId: number) {
+    return this.db.oneOrNone(sql.findLast, [projectId]);
   }
 }
