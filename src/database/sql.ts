@@ -26,9 +26,8 @@ export const users = {
 };
 
 export const projects = {
-  get: 'SELECT * FROM projects WHERE id in (SELECT project_id FROM project_members WHERE user_id = $1);',
   getProjectsData:
-    'SELECT p."name" as project_name, t.* FROM todos t INNER JOIN projects p ON p.id = t.project_id WHERE t.project_id IN (SELECT project_id FROM project_members pm WHERE pm.user_id = $1) ORDER BY position ASC;',
+    'SELECT p.id as project_id, p."name" as project_name, p.description as project_description, t.* FROM projects p LEFT JOIN todos t ON p.id = t.project_id WHERE p.account_id = (SELECT account_id FROM users u WHERE u.id = $1) AND (t.project_id IS NULL OR t.project_id IN (SELECT project_id FROM project_members pm WHERE pm.user_id = $1)) ORDER BY position ASC;',
   filterProjectsData:
-    'SELECT p."name" as project_name, t.* FROM todos t INNER JOIN projects p ON p.id = t.project_id  WHERE t.project_id IN (SELECT project_id FROM project_members pm WHERE pm.user_id = ${userId}) AND (t.id IN (SELECT id  FROM (SELECT id, unnest(tags) AS tag  FROM todos) AS subquery WHERE tag ILIKE ${value}) OR t.name ILIKE ${value} OR t.description ILIKE ${value}) ORDER BY position ASC;',
+    'SELECT p.id as project_id, p."name" as project_name, p.description as project_description, t.* FROM projects p LEFT JOIN todos t ON p.id = t.project_id WHERE p.account_id = (SELECT account_id FROM users u WHERE u.id = ${userId}) AND (t.project_id IS NULL OR t.project_id IN (SELECT project_id FROM project_members pm WHERE pm.user_id = ${userId})) AND (t.id IS NULL OR t.id IN (SELECT id  FROM (SELECT id, unnest(tags) AS tag  FROM todos) AS subquery WHERE tag ILIKE ${value}) OR t.name ILIKE ${value} OR t.description ILIKE ${value}) ORDER BY position ASC;',
 };
