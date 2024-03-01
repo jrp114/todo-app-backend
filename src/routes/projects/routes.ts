@@ -1,8 +1,12 @@
 import express, { Request, Response } from 'express';
 import authorize from '../../helpers/authorize';
-import { filterProjectsData, getProjects } from './service';
+import { createProject, filterProjectsData, getProjects } from './service';
 
 const router = express.Router();
+
+router.route('/').post(authorize(), async (req: Request, res: Response) => {
+  createProject(req, res);
+});
 
 router
   .route('/todos')

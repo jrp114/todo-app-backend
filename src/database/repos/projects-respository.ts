@@ -38,10 +38,6 @@ export default class ProjectsRepository {
     );
   }
 
-  async get(userId: string) {
-    return this.db.any(sql.get, userId);
-  }
-
   async getProjectsData(userId: string) {
     return this.db.any(sql.getProjectsData, userId);
   }
@@ -51,5 +47,11 @@ export default class ProjectsRepository {
       value: `%${value}%`,
       userId,
     });
+  }
+
+  async createProject(data: any) {
+    return this.db.one(
+      this.pgp.helpers.insert(data, this.insertCS) + ' RETURNING *',
+    );
   }
 }
