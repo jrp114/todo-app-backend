@@ -7,6 +7,7 @@ import {
   UsersRepository,
 } from './repos';
 import AccountsRepository from './repos/accounts-repository';
+import ProjectMembersRepository from './repos/project-members-repository';
 import ProjectsRepository from './repos/projects-respository';
 
 dotenv.config();
@@ -18,6 +19,7 @@ const initOptions = {
     obj.users = new UsersRepository(obj, pgp);
     obj.accounts = new AccountsRepository(obj, pgp);
     obj.projects = new ProjectsRepository(obj, pgp);
+    obj.projectMembers = new ProjectMembersRepository(obj, pgp);
   },
   // // uncomment to log all queries
   // query(e: any) {
