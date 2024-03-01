@@ -1,6 +1,12 @@
 import { Request, Response } from 'express';
 import db from '../../database/db';
+import { mapTodo } from '../projects/map-todos';
 
+/**
+ * Add a new todo
+ * @param req body: { name: string, description: string, tags: string, projectId: string }
+ * @param return object: { id: string, name: string, description: string, tags: string, position: number, projectId: string }
+ */
 export async function addTodo(req: Request, res: Response) {
   try {
     const last = await db.todos.findLast(req.body.projectId);
@@ -10,12 +16,17 @@ export async function addTodo(req: Request, res: Response) {
       req.body.position = last.position + 1;
     }
     const todo = await db.todos.add(req.body);
-    res.status(201).send(todo);
+    res.status(201).send(mapTodo(todo));
   } catch (err) {
     res.status(500).send('Error adding todo');
   }
 }
 
+/**
+ * Update a todo
+ * @param req body: { name: string, description: string, tags: string, projectId: string, position: number, originalPosition: number, origin: string }
+ * @param return object: { id: string, name: string, description: string, tags: string, position: number, projectId: string }
+ */
 export async function updateTodo(req: Request, res: Response) {
   const todo = await db.task(async (task) => {
     if (req.body.origin !== req.body.projectId) {
@@ -42,18 +53,15 @@ export async function updateTodo(req: Request, res: Response) {
       });
     }
   });
-  res.status(201).send(todo);
+  res.status(201).send(mapTodo(todo));
 }
 
+/**
+ * Delete a todo
+ * @param req params: { id: string }
+ * @param return object: { id: string, name: string, description: string, tags: string, position: number, projectId: string }
+ */
 export async function deleteTodo(req: Request, res: Response) {
   const todo = await db.todos.remove(req.params.id);
-  res.status(201).send(todo);
-}
-
-export async function filterByTag(req: Request, res: Response) {
-  const all = await db.todos.filterByTag(
-    req.query.value,
-    req.query.projectId as string,
-  );
-  res.status(200).send(all);
+  res.status(201).send(mapTodo(todo));
 }

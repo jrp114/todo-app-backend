@@ -3,6 +3,11 @@ import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import db from '../../database/db';
 
+/**
+ * Create a session
+ * @param user object: { id: number, account_id: number, email: string, name: string, hash: string }
+ * @returns object: { auth: boolean, userId: string, token: string, email: string, name: string, accountId: string }
+ */
 const createSession = (user: any) => {
   const token = jwt.sign(
     { email: user.email, name: user.name, hash: user.hash },
@@ -21,6 +26,11 @@ const createSession = (user: any) => {
   };
 };
 
+/**
+ * Add a new user
+ * @param req body: { name: string, email: string, password: string }
+ * @param return object: { auth: boolean, userId: string, token: string, email: string, name: string, accountId: string }
+ */
 export async function addUser(req: Request, res: Response) {
   try {
     req.body.salt = bcrypt.genSaltSync(10);
@@ -40,6 +50,11 @@ export async function addUser(req: Request, res: Response) {
   }
 }
 
+/**
+ * Login a user
+ * @param req body: { email: string, password: string }
+ * @param return object: { auth: boolean, userId: string, token: string, email: string, name: string, accountId: string }
+ */
 export async function login(req: Request, res: Response) {
   try {
     const user = await db.users.getByEmail(req.body.email);

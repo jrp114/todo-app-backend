@@ -5,6 +5,12 @@ interface UserRequest extends Request {
   user?: any;
 }
 
+/**
+ * Middleware to check if the user is authenticated
+ * @param req Request
+ * @param res Response
+ * @param next NextFunction
+ */
 export default () => {
   return (req: UserRequest, res: Response, next: NextFunction) => {
     const token =
