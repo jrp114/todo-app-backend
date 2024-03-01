@@ -11,5 +11,6 @@ export function mapTodo(todo: any) {
     tags: todo.tags,
     projectId: todo.project_id,
     projectName: todo.project_name,
+    projectDescription: todo.project_description,
   };
 }
