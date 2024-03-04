@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import db from '../../database/db';
-import { mapComment, mapComments } from './map-comments';
 
 /**
  * Get all comments for a todo
@@ -9,7 +8,7 @@ import { mapComment, mapComments } from './map-comments';
  */
 export async function getComment(req: Request, res: Response) {
   const result = await db.comments.getByTodo(req.query.todoId);
-  res.status(200).send(mapComments(result));
+  res.status(200).send(result);
 }
 
 /**
@@ -19,7 +18,7 @@ export async function getComment(req: Request, res: Response) {
  */
 export async function postComment(req: Request, res: Response) {
   const comment = await db.comments.add(req.body);
-  res.status(201).send(mapComment(comment));
+  res.status(201).send(comment);
 }
 
 /**
@@ -33,7 +32,7 @@ export async function updateComment(req: Request, res: Response) {
     ...req.body,
     id: req.params.id,
   });
-  res.status(201).send(mapComment(comment));
+  res.status(201).send(comment);
 }
 
 /**
@@ -43,5 +42,5 @@ export async function updateComment(req: Request, res: Response) {
  */
 export async function deleteComment(req: Request, res: Response) {
   const comment = await db.comments.remove(req.params.id);
-  res.status(201).send(mapComment(comment));
+  res.status(201).send(comment);
 }

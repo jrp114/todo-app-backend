@@ -11,7 +11,7 @@ export const todos = {
             FROM todos
           ) AS subquery
           WHERE tag ILIKE $1 OR description ILIKE $1 OR name ILIKE $1) AND project_id = $2;`,
-  delete: 'DELETE FROM todos WHERE id=$1',
+  delete: 'DELETE FROM todos WHERE id=$1 RETURNING *;',
   get: 'SELECT * FROM todos WHERE project_id = $1 ORDER BY position ASC;',
   movePosition:
     'UPDATE todos SET position = position + 1 WHERE project_id = $2 AND position >= $1;',

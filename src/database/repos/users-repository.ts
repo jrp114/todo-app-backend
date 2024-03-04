@@ -1,5 +1,6 @@
 import { ColumnSet, IDatabase, IMain } from 'pg-promise';
 import { Extensions } from '.';
+import { Users } from '../../db-interfaces';
 import { users as sql } from '../sql';
 
 export default class UsersRepository {
@@ -45,10 +46,10 @@ export default class UsersRepository {
     );
     this.updateCS = this.insertCS.extend([{ name: 'id', cnd: true }]);
   }
-  async getByEmail(email: string) {
+  async getByEmail(email: string): Promise<Users | null> {
     return this.db.oneOrNone(sql.getByEmail, [email]);
   }
-  async add(params: any) {
+  async add(params: any): Promise<Users> {
     return this.db.one(
       this.pgp.helpers.insert(params, this.insertCS) + ' RETURNING *;',
     );

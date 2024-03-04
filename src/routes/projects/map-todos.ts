@@ -1,8 +1,16 @@
-export function mapTodos(todos: any) {
+import { Todos } from '../../db-interfaces';
+
+export interface TodosWithProject extends Todos {
+  project_id: string;
+  project_name: string;
+  project_description: string;
+}
+
+export function mapTodos(todos: Array<TodosWithProject>) {
   return todos.map(mapTodo);
 }
 
-export function mapTodo(todo: any) {
+export function mapTodo(todo: TodosWithProject) {
   return {
     id: todo.id,
     name: todo.name,

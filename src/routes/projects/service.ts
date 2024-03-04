@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import db from '../../database/db';
-import { mapProject } from './map-projects';
 import { mapTodos } from './map-todos';
 
 /**
@@ -37,5 +36,5 @@ export async function createProject(req: Request, res: Response) {
     userId: req.body.userId,
     projectId: response.id,
   });
-  res.status(201).send(mapProject(response));
+  res.status(201).send(response);
 }

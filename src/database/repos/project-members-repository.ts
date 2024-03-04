@@ -1,5 +1,6 @@
 import { ColumnSet, IDatabase, IMain } from 'pg-promise';
 import { Extensions } from '.';
+import { ProjectMembers } from '../../db-interfaces';
 
 export default class ProjectMembersRepository {
   private insertCS: ColumnSet;
@@ -25,7 +26,7 @@ export default class ProjectMembersRepository {
     );
   }
 
-  async add(params: any) {
+  async add(params: any): Promise<ProjectMembers> {
     return this.db.one(
       this.pgp.helpers.insert(params, this.insertCS) + ' RETURNING *',
     );

@@ -1,5 +1,6 @@
 import { ColumnSet, IDatabase, IMain } from 'pg-promise';
 import { Extensions } from '.';
+import { Comments } from '../../db-interfaces';
 import { comments as sql } from '../sql';
 
 export default class CommentsRepository {
@@ -28,21 +29,21 @@ export default class CommentsRepository {
     );
     this.updateCS = this.insertCS.extend([{ name: 'id', cnd: true }]);
   }
-  async getByTodo(id: any) {
+  async getByTodo(id: any): Promise<Array<Comments>> {
     return this.db.manyOrNone(sql.getByTodo, [id]);
   }
-  async add(params: any) {
+  async add(params: any): Promise<Comments> {
     return this.db.one(
       this.pgp.helpers.insert(params, this.insertCS) + ' RETURNING *;',
     );
   }
-  async updateComment(params: any) {
+  async updateComment(params: any): Promise<Comments> {
     return this.db.one(
       this.pgp.helpers.update(params, this.updateCS) +
         ` WHERE id = ${params.id} RETURNING *;`,
     );
   }
-  async remove(id: any) {
-    return this.db.oneOrNone(sql.delete, [id]);
+  async remove(id: any): Promise<Comments> {
+    return this.db.one(sql.delete, [id]);
   }
 }

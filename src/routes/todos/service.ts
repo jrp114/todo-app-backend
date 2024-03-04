@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import db from '../../database/db';
-import { mapTodo } from '../projects/map-todos';
 
 /**
  * Add a new todo
@@ -13,10 +12,10 @@ export async function addTodo(req: Request, res: Response) {
     if (!last) {
       req.body.position = 0;
     } else {
-      req.body.position = last.position + 1;
+      req.body.position = last.position ? last.position + 1 : 0;
     }
     const todo = await db.todos.add(req.body);
-    res.status(201).send(mapTodo(todo));
+    res.status(201).send(todo);
   } catch (err) {
     res.status(500).send('Error adding todo');
   }
@@ -53,7 +52,7 @@ export async function updateTodo(req: Request, res: Response) {
       });
     }
   });
-  res.status(201).send(mapTodo(todo));
+  res.status(201).send(todo);
 }
 
 /**
@@ -63,5 +62,5 @@ export async function updateTodo(req: Request, res: Response) {
  */
 export async function deleteTodo(req: Request, res: Response) {
   const todo = await db.todos.remove(req.params.id);
-  res.status(201).send(mapTodo(todo));
+  res.status(201).send(todo);
 }

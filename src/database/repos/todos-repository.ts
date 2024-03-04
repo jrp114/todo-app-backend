@@ -1,5 +1,6 @@
 import { ColumnSet, IDatabase, IMain } from 'pg-promise';
 import { Extensions } from '.';
+import { Todos } from '../../db-interfaces';
 import { todos as sql } from '../sql';
 
 export default class TodosRepository {
@@ -42,37 +43,41 @@ export default class TodosRepository {
     );
     this.updateCS = this.insertCS.extend([{ name: 'id', cnd: true }]);
   }
-  async get(projectId: string) {
-    return this.db.manyOrNone(sql.get, [projectId]);
-  }
-  async add(params: any) {
+
+  async add(params: any): Promise<Todos> {
     return this.db.one(
       this.pgp.helpers.insert(params, this.insertCS) + ' RETURNING *;',
     );
   }
-  async updateTodo(params: any) {
+
+  async updateTodo(params: any): Promise<Todos> {
     return this.db.one(
       this.pgp.helpers.update(params, this.updateCS) +
         ` WHERE id = ${params.id} RETURNING *;`,
     );
   }
-  async remove(id: any) {
+
+  async remove(id: any): Promise<Todos | null> {
     return this.db.oneOrNone(sql.delete, [id]);
   }
-  async filterByTag(value: any, projectId: string) {
+
+  async filterByTag(value: any, projectId: string): Promise<Array<Todos>> {
     const result = await this.db.manyOrNone(sql.filterByTag, [
       `%${value}%`,
       projectId,
     ]);
     return result;
   }
-  async movePosition(position: any, projectId: any) {
+
+  async movePosition(position: any, projectId: any): Promise<null> {
     return this.db.none(sql.movePosition, [position || 0, projectId]);
   }
-  async movePositionDown(position: any, projectId: any) {
+
+  async movePositionDown(position: any, projectId: any): Promise<null> {
     return this.db.none(sql.movePositionDown, [position || 0, projectId]);
   }
-  async findLast(projectId: number) {
+
+  async findLast(projectId: number): Promise<Todos | null> {
     return this.db.oneOrNone(sql.findLast, [projectId]);
   }
 }

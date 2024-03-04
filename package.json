@@ -10,7 +10,8 @@
     "db-up": "db-migrate up",
     "db-down": "db-migrate down",
     "build": "rimraf dist && tsc",
-    "dev": "npm run build && node dist/server.js"
+    "dev": "npm run build && node dist/server.js",
+    "generate:sql": "dotenv -- schemats generate -c 'postgres://postgres:postgres@localhost:5492/postgres' -C -s public -o src/db-interfaces.ts && sed -i '' 's/export namespace/export declare namespace/g' src/db-interfaces.ts"
   },
   "keywords": [],
   "author": "",
