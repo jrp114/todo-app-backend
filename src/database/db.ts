@@ -3,7 +3,7 @@ import PgPromise from 'pg-promise';
 import {
   CommentsRepository,
   Extensions,
-  TodosRepository,
+  TasksRepository,
   UsersRepository,
 } from './repos';
 import AccountsRepository from './repos/accounts-repository';
@@ -14,7 +14,7 @@ dotenv.config();
 
 const initOptions = {
   extend(obj: PgPromise.IDatabase<Extensions> & Extensions) {
-    obj.todos = new TodosRepository(obj, pgp);
+    obj.tasks = new TasksRepository(obj, pgp);
     obj.comments = new CommentsRepository(obj, pgp);
     obj.users = new UsersRepository(obj, pgp);
     obj.accounts = new AccountsRepository(obj, pgp);

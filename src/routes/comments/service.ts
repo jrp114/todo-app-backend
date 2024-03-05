@@ -2,19 +2,19 @@ import { Request, Response } from 'express';
 import db from '../../database/db';
 
 /**
- * Get all comments for a todo
- * @param req query: { todoId: string }
- * @param return Array<object>: { id: string, text: string, todoId: string, createdAt: string, updatedAt: string }
+ * Get all comments for a task
+ * @param req query: { taskId: string }
+ * @param return Array<object>: { id: string, text: string, taskId: string, createdAt: string, updatedAt: string }
  */
 export async function getComment(req: Request, res: Response) {
-  const result = await db.comments.getByTodo(req.query.todoId);
+  const result = await db.comments.getByTask(req.query.taskId);
   res.status(200).send(result);
 }
 
 /**
  * Create a new comment
- * @param req body: { text: string, todoId: string }
- * @param return object: { id: string, text: string, todoId: string, createdAt: string, updatedAt: string }
+ * @param req body: { text: string, taskId: string }
+ * @param return object: { id: string, text: string, taskId: string, createdAt: string, updatedAt: string }
  */
 export async function postComment(req: Request, res: Response) {
   const comment = await db.comments.add(req.body);
@@ -25,7 +25,7 @@ export async function postComment(req: Request, res: Response) {
  * Update a comment
  * @param req body: { text: string }
  * @param req params: { id: string }
- * @param return object: { id: string, text: string, todoId: string, createdAt: string, updatedAt: string }
+ * @param return object: { id: string, text: string, taskId: string, createdAt: string, updatedAt: string }
  */
 export async function updateComment(req: Request, res: Response) {
   const comment = await db.comments.updateComment({
@@ -38,7 +38,7 @@ export async function updateComment(req: Request, res: Response) {
 /**
  * Delete a comment
  * @param req params: { id: string }
- * @param return object: { id: string, text: string, todoId: string, createdAt: string, updatedAt: string }
+ * @param return object: { id: string, text: stringa taskId: string, createdAt: string, updatedAt: string }
  */
 export async function deleteComment(req: Request, res: Response) {
   const comment = await db.comments.remove(req.params.id);

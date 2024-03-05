@@ -20,8 +20,8 @@ updatedAt:Date| null;
         export interface Comments {
         createdAt:Date| null;
 id:number;
+taskId:number;
 text:string;
-todoId:number;
 updatedAt:Date| null;
 
         }
@@ -52,7 +52,7 @@ updatedAt:Date| null;
 
         }
     
-        export interface Todos {
+        export interface Tasks {
         createdAt:Date| null;
 description:string| null;
 id:number;
@@ -82,6 +82,6 @@ export interface DBTables {
   migrations: Migrations
   projectMembers: ProjectMembers
   projects: Projects
-  todos: Todos
+  tasks: Tasks
   users: Users
 }

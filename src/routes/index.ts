@@ -1,6 +1,6 @@
 import comments from './comments/routes';
 import projects from './projects/routes';
-import todos from './todos/routes';
+import tasks from './tasks/routes';
 import users from './users/routes';
 
-export { comments, projects, todos, users };
+export { comments, projects, tasks, users };

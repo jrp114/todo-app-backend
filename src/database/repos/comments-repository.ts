@@ -18,9 +18,9 @@ export default class CommentsRepository {
           prop: 'text',
         },
         {
-          name: 'todo_id',
-          prop: 'todo_id',
-          skip: (e: any) => !e.todo_id,
+          name: 'task_id',
+          prop: 'taskId',
+          skip: (e: any) => !e.exists,
         },
       ],
       {
@@ -29,8 +29,8 @@ export default class CommentsRepository {
     );
     this.updateCS = this.insertCS.extend([{ name: 'id', cnd: true }]);
   }
-  async getByTodo(id: any): Promise<Array<Comments>> {
-    return this.db.manyOrNone(sql.getByTodo, [id]);
+  async getByTask(id: any): Promise<Array<Comments>> {
+    return this.db.manyOrNone(sql.getByTask, [id]);
   }
   async add(params: any): Promise<Comments> {
     return this.db.one(

@@ -1,14 +1,14 @@
 import { ColumnSet, IDatabase, IMain } from 'pg-promise';
 import { Extensions } from '.';
-import { Todos } from '../../db-interfaces';
-import { todos as sql } from '../sql';
+import { Tasks } from '../../db-interfaces';
+import { tasks as sql } from '../sql';
 
-export default class TodosRepository {
+export default class TasksRepository {
   private insertCS: ColumnSet;
   private updateCS: ColumnSet;
 
   constructor(private db: IDatabase<Extensions>, private pgp: IMain) {
-    const table = new pgp.helpers.TableName('todos');
+    const table = new pgp.helpers.TableName('tasks');
     this.db = db;
     this.pgp = pgp;
     this.insertCS = new pgp.helpers.ColumnSet(
@@ -44,24 +44,24 @@ export default class TodosRepository {
     this.updateCS = this.insertCS.extend([{ name: 'id', cnd: true }]);
   }
 
-  async add(params: any): Promise<Todos> {
+  async add(params: any): Promise<Tasks> {
     return this.db.one(
       this.pgp.helpers.insert(params, this.insertCS) + ' RETURNING *;',
     );
   }
 
-  async updateTodo(params: any): Promise<Todos> {
+  async updateTask(params: any): Promise<Tasks> {
     return this.db.one(
       this.pgp.helpers.update(params, this.updateCS) +
         ` WHERE id = ${params.id} RETURNING *;`,
     );
   }
 
-  async remove(id: any): Promise<Todos | null> {
+  async remove(id: any): Promise<Tasks | null> {
     return this.db.oneOrNone(sql.delete, [id]);
   }
 
-  async filterByTag(value: any, projectId: string): Promise<Array<Todos>> {
+  async filterByTag(value: any, projectId: string): Promise<Array<Tasks>> {
     const result = await this.db.manyOrNone(sql.filterByTag, [
       `%${value}%`,
       projectId,
@@ -77,7 +77,7 @@ export default class TodosRepository {
     return this.db.none(sql.movePositionDown, [position || 0, projectId]);
   }
 
-  async findLast(projectId: number): Promise<Todos | null> {
+  async findLast(projectId: number): Promise<Tasks | null> {
     return this.db.oneOrNone(sql.findLast, [projectId]);
   }
 }

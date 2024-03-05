@@ -1,18 +1,18 @@
 import express, { Request, Response } from 'express';
 import authorize from '../../helpers/authorize';
-import { addTodo, deleteTodo, updateTodo } from './service';
+import { addTask, deleteTask, updateTask } from './service';
 
 const router = express.Router();
 
 router
   .route('/')
-  .post(authorize(), async (req: Request, res: Response) => addTodo(req, res));
+  .post(authorize(), async (req: Request, res: Response) => addTask(req, res));
 
 router
   .route('/:id')
-  .put(authorize(), async (req: Request, res: Response) => updateTodo(req, res))
+  .put(authorize(), async (req: Request, res: Response) => updateTask(req, res))
   .delete(authorize(), async (req: Request, res: Response) =>
-    deleteTodo(req, res),
+    deleteTask(req, res),
   );
 
 export default router;

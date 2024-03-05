@@ -1,7 +1,7 @@
 import { ColumnSet, IDatabase, IMain } from 'pg-promise';
 import { Extensions } from '.';
 import { Projects } from '../../db-interfaces';
-import { TodosWithProject } from '../../routes/projects/map-todos';
+import { TasksWithProject } from '../../routes/projects/map-tasks';
 import { projects as sql } from '../sql';
 
 export default class ProjectsRepository {
@@ -40,14 +40,14 @@ export default class ProjectsRepository {
     );
   }
 
-  async getProjectsData(userId: string): Promise<Array<TodosWithProject>> {
+  async getProjectsData(userId: string): Promise<Array<TasksWithProject>> {
     return this.db.any(sql.getProjectsData, userId);
   }
 
   async filterProjectsData(
     value: any,
     userId: string,
-  ): Promise<Array<TodosWithProject>> {
+  ): Promise<Array<TasksWithProject>> {
     return this.db.any(sql.filterProjectsData, {
       value: `%${value}%`,
       userId,

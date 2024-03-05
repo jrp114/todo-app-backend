@@ -9,13 +9,13 @@ router.route('/').post(authorize(), async (req: Request, res: Response) => {
 });
 
 router
-  .route('/todos')
+  .route('/tasks')
   .get(authorize(), async (req: Request, res: Response) =>
     getProjects(req, res),
   );
 
 router
-  .route('/todos/filter')
+  .route('/tasks/filter')
   .get(authorize(), async (req: Request, res: Response) =>
     filterProjectsData(req, res),
   );
