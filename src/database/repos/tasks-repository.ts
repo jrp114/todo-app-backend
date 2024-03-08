@@ -32,8 +32,8 @@ export default class TasksRepository {
           skip: (e) => !e.exists,
         },
         {
-          name: 'project_id',
-          prop: 'projectId',
+          name: 'task_list_id',
+          prop: 'taskListId',
           skip: (e) => !e.exists,
         },
       ],
@@ -61,23 +61,23 @@ export default class TasksRepository {
     return this.db.oneOrNone(sql.delete, [id]);
   }
 
-  async filterByTag(value: any, projectId: string): Promise<Array<Tasks>> {
+  async filterByTag(value: any, taskListId: string): Promise<Array<Tasks>> {
     const result = await this.db.manyOrNone(sql.filterByTag, [
       `%${value}%`,
-      projectId,
+      taskListId,
     ]);
     return result;
   }
 
-  async movePosition(position: any, projectId: any): Promise<null> {
-    return this.db.none(sql.movePosition, [position || 0, projectId]);
+  async movePosition(position: any, taskListId: any): Promise<null> {
+    return this.db.none(sql.movePosition, [position || 0, taskListId]);
   }
 
-  async movePositionDown(position: any, projectId: any): Promise<null> {
-    return this.db.none(sql.movePositionDown, [position || 0, projectId]);
+  async movePositionDown(position: any, taskListId: any): Promise<null> {
+    return this.db.none(sql.movePositionDown, [position || 0, taskListId]);
   }
 
-  async findLast(projectId: number): Promise<Tasks | null> {
-    return this.db.oneOrNone(sql.findLast, [projectId]);
+  async findLast(taskListId: number): Promise<Tasks | null> {
+    return this.db.oneOrNone(sql.findLast, [taskListId]);
   }
 }

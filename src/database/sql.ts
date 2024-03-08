@@ -10,24 +10,28 @@ export const tasks = {
             SELECT id, unnest(tags) AS tag
             FROM tasks
           ) AS subquery
-          WHERE tag ILIKE $1 OR description ILIKE $1 OR name ILIKE $1) AND project_id = $2;`,
+          WHERE tag ILIKE $1 OR description ILIKE $1 OR name ILIKE $1) AND task_list_id = $2;`,
   delete: 'DELETE FROM tasks WHERE id=$1 RETURNING *;',
-  get: 'SELECT * FROM tasks WHERE project_id = $1 ORDER BY position ASC;',
+  get: 'SELECT * FROM tasks WHERE task_list_id = $1 ORDER BY position ASC;',
   movePosition:
-    'UPDATE tasks SET position = position + 1 WHERE project_id = $2 AND position >= $1;',
+    'UPDATE tasks SET position = position + 1 WHERE task_list_id = $2 AND position >= $1;',
   movePositionDown:
-    'UPDATE tasks SET position = position - 1 WHERE project_id = $2 AND position <= $1;',
+    'UPDATE tasks SET position = position - 1 WHERE task_list_id = $2 AND position <= $1;',
   findLast:
-    'SELECT * FROM tasks WHERE project_id = $1 ORDER BY position DESC LIMIT 1;',
+    'SELECT * FROM tasks WHERE task_list_id = $1 ORDER BY position DESC LIMIT 1;',
 };
 
 export const users = {
   getByEmail: 'SELECT * FROM users WHERE email=$1;',
 };
 
+export const taskLists = {
+  getTaskListsData:
+    'SELECT tl.id AS task_list_id, tl.name AS task_list_name, t.* FROM task_lists tl LEFT JOIN tasks t ON tl.id = t.task_list_id LEFT JOIN projects p ON tl.project_id = p.id LEFT JOIN task_list_members tlm ON t.task_list_id = tlm.task_list_id WHERE (tlm.user_id = $1 OR t.task_list_id IS NULL) AND (p.account_id = (SELECT account_id FROM users WHERE id = $1)) ORDER BY t.position ASC;',
+  filterTaskListsData:
+    'SELECT tl.id AS task_list_id, tl.name AS task_list_name, t.* FROM task_lists tl LEFT JOIN tasks t ON tl.id = t.task_list_id LEFT JOIN projects p ON tl.project_id = p.id LEFT JOIN task_list_members pm ON tl.id = pm.task_list_id WHERE (p.account_id = (SELECT account_id FROM users WHERE id = ${userId})) AND (pm.user_id = ${userId} OR t.task_list_id IS NULL) AND (t.id IS NULL OR t.id IN (SELECT id FROM (SELECT id, unnest(tags) AS tag FROM tasks) AS subquery WHERE tag ILIKE ${value}) OR t.name ILIKE ${value} OR t.description ILIKE ${value}) ORDER BY t.position ASC;',
+};
+
 export const projects = {
-  getProjectsData:
-    'SELECT p.id as project_id, p."name" as project_name, p.description as project_description, t.* FROM projects p LEFT JOIN tasks t ON p.id = t.project_id WHERE p.account_id = (SELECT account_id FROM users u WHERE u.id = $1) AND (t.project_id IS NULL OR t.project_id IN (SELECT project_id FROM project_members pm WHERE pm.user_id = $1)) ORDER BY position ASC;',
-  filterProjectsData:
-    'SELECT p.id as project_id, p."name" as project_name, p.description as project_description, t.* FROM projects p LEFT JOIN tasks t ON p.id = t.project_id WHERE p.account_id = (SELECT account_id FROM users u WHERE u.id = ${userId}) AND (t.project_id IS NULL OR t.project_id IN (SELECT project_id FROM project_members pm WHERE pm.user_id = ${userId})) AND (t.id IS NULL OR t.id IN (SELECT id  FROM (SELECT id, unnest(tags) AS tag  FROM tasks) AS subquery WHERE tag ILIKE ${value}) OR t.name ILIKE ${value} OR t.description ILIKE ${value}) ORDER BY position ASC;',
+  get: 'SELECT * FROM projects WHERE account_id = $1;',
 };

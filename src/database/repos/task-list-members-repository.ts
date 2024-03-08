@@ -1,12 +1,12 @@
 import { ColumnSet, IDatabase, IMain } from 'pg-promise';
 import { Extensions } from '.';
-import { ProjectMembers } from '../../db-interfaces';
+import { TaskListMembers } from '../../db-interfaces';
 
-export default class ProjectMembersRepository {
+export default class TaskListMembersRepository {
   private insertCS: ColumnSet;
 
   constructor(private db: IDatabase<Extensions>, private pgp: IMain) {
-    const table = new pgp.helpers.TableName('project_members');
+    const table = new pgp.helpers.TableName('task_list_members');
     this.db = db;
     this.pgp = pgp;
     this.insertCS = new pgp.helpers.ColumnSet(
@@ -16,8 +16,8 @@ export default class ProjectMembersRepository {
           prop: 'userId',
         },
         {
-          name: 'project_id',
-          prop: 'projectId',
+          name: 'task_list_id',
+          prop: 'taskListId',
         },
       ],
       {
@@ -26,7 +26,7 @@ export default class ProjectMembersRepository {
     );
   }
 
-  async add(params: any): Promise<ProjectMembers> {
+  async add(params: any): Promise<TaskListMembers> {
     return this.db.one(
       this.pgp.helpers.insert(params, this.insertCS) + ' RETURNING *',
     );

@@ -28,9 +28,9 @@ export async function addTask(req: Request, res: Response) {
  */
 export async function updateTask(req: Request, res: Response) {
   const task = await db.task(async (t) => {
-    if (req.body.origin !== req.body.projectId) {
-      // we need the rest of the tasks within the same projectId to move order up by one
-      await t.tasks.movePosition(req.body.position, req.body.projectId);
+    if (req.body.origin !== req.body.taskListId) {
+      // we need the rest of the tasks within the same task list to move order up by one
+      await t.tasks.movePosition(req.body.position, req.body.taskListId);
       return t.tasks.updateTask({
         ...req.body,
         position: req.body.position || 0,
@@ -38,10 +38,10 @@ export async function updateTask(req: Request, res: Response) {
     } else {
       if (req.body.originalPosition > req.body.position) {
         // we need the rest of the tasks within the same projectId to move order up by one
-        await t.tasks.movePosition(req.body.position, req.body.projectId);
+        await t.tasks.movePosition(req.body.position, req.body.taskListId);
       } else {
         // we need the rest of the tasks within the same projectId to move order down by one
-        await t.tasks.movePositionDown(req.body.position, req.body.projectId);
+        await t.tasks.movePositionDown(req.body.position, req.body.taskListId);
       }
       return t.tasks.updateTask({
         ...req.body,

@@ -33,15 +33,6 @@ runOn:Date;
 
         }
     
-        export interface ProjectMembers {
-        createdAt:Date| null;
-id:number;
-projectId:number;
-updatedAt:Date| null;
-userId:number;
-
-        }
-    
         export interface Projects {
         accountId:number;
 createdAt:Date| null;
@@ -52,14 +43,32 @@ updatedAt:Date| null;
 
         }
     
+        export interface TaskListMembers {
+        createdAt:Date| null;
+id:number;
+taskListId:number;
+updatedAt:Date| null;
+userId:number;
+
+        }
+    
+        export interface TaskLists {
+        createdAt:Date| null;
+id:number;
+name:string| null;
+projectId:number| null;
+updatedAt:Date| null;
+
+        }
+    
         export interface Tasks {
         createdAt:Date| null;
 description:string| null;
 id:number;
 name:string| null;
 position:number| null;
-projectId:number;
 tags:Array<string>| null;
+taskListId:number;
 updatedAt:Date| null;
 
         }
@@ -80,8 +89,9 @@ export interface DBTables {
   accounts: Accounts
   comments: Comments
   migrations: Migrations
-  projectMembers: ProjectMembers
   projects: Projects
+  taskListMembers: TaskListMembers
+  taskLists: TaskLists
   tasks: Tasks
   users: Users
 }

@@ -1,23 +1,11 @@
 import express, { Request, Response } from 'express';
 import authorize from '../../helpers/authorize';
-import { createProject, filterProjectsData, getProjects } from './service';
+import { getProjects } from './service';
 
 const router = express.Router();
 
-router.route('/').post(authorize(), async (req: Request, res: Response) => {
-  createProject(req, res);
+router.route('/').get(authorize(), async (req: Request, res: Response) => {
+  getProjects(req, res);
 });
-
-router
-  .route('/tasks')
-  .get(authorize(), async (req: Request, res: Response) =>
-    getProjects(req, res),
-  );
-
-router
-  .route('/tasks/filter')
-  .get(authorize(), async (req: Request, res: Response) =>
-    filterProjectsData(req, res),
-  );
 
 export default router;

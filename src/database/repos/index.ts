@@ -1,7 +1,8 @@
 import AccountsRepository from './accounts-repository';
 import CommentsRepository from './comments-repository';
-import ProjectMembersRepository from './project-members-repository';
-import ProjectsRepository from './projects-respository';
+import ProjectsRepository from './projects-repository';
+import TaskListMembersRepository from './task-list-members-repository';
+import TaskListsRepository from './task-lists-respository';
 import TasksRepository from './tasks-repository';
 import UsersRepository from './users-repository';
 
@@ -12,6 +13,7 @@ export interface Extensions {
   comments: CommentsRepository;
   users: UsersRepository;
   accounts: AccountsRepository;
+  taskLists: TaskListsRepository;
+  taskListMembers: TaskListMembersRepository;
   projects: ProjectsRepository;
-  projectMembers: ProjectMembersRepository;
 }

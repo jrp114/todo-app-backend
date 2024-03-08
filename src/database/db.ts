@@ -7,8 +7,9 @@ import {
   UsersRepository,
 } from './repos';
 import AccountsRepository from './repos/accounts-repository';
-import ProjectMembersRepository from './repos/project-members-repository';
-import ProjectsRepository from './repos/projects-respository';
+import ProjectsRepository from './repos/projects-repository';
+import TaskListMembersRepository from './repos/task-list-members-repository';
+import TaskListsRepository from './repos/task-lists-respository';
 
 dotenv.config();
 
@@ -18,8 +19,9 @@ const initOptions = {
     obj.comments = new CommentsRepository(obj, pgp);
     obj.users = new UsersRepository(obj, pgp);
     obj.accounts = new AccountsRepository(obj, pgp);
+    obj.taskLists = new TaskListsRepository(obj, pgp);
+    obj.taskListMembers = new TaskListMembersRepository(obj, pgp);
     obj.projects = new ProjectsRepository(obj, pgp);
-    obj.projectMembers = new ProjectMembersRepository(obj, pgp);
   },
   // // uncomment to log all queries
   // query(e: any) {
