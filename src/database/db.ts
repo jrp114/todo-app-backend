@@ -25,7 +25,7 @@ const initOptions = {
   },
   // // uncomment to log all queries
   // query(e: any) {
-  //   console.log(e.query);
+  //   logger('sql', 'info', e.query);
   // },
 };
 

@@ -2,6 +2,7 @@ import bcrypt from 'bcryptjs';
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import db from '../../database/db';
+import logger from '../../helpers/logger';
 
 /**
  * Create a session
@@ -46,6 +47,7 @@ export async function addUser(req: Request, res: Response) {
     const session = createSession(user);
     res.status(201).send(session);
   } catch (err: any) {
+    logger('addUser', 'error', err);
     res.status(400).send(err.message);
   }
 }
@@ -70,6 +72,7 @@ export async function login(req: Request, res: Response) {
       }
     }
   } catch (err: any) {
+    logger('login', 'error', err);
     res.status(400).send(err.message);
   }
 }

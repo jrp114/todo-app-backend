@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import db from '../../database/db';
+import logger from '../../helpers/logger';
 
 /**
  * Get all comments for a task
@@ -7,8 +8,12 @@ import db from '../../database/db';
  * @param return Array<object>: { id: string, text: string, taskId: string, createdAt: string, updatedAt: string }
  */
 export async function getComment(req: Request, res: Response) {
-  const result = await db.comments.getByTask(req.query.taskId);
-  res.status(200).send(result);
+  try {
+    const result = await db.comments.getByTask(req.query.taskId);
+    res.status(200).send(result);
+  } catch (error: any) {
+    logger('getComment', 'error', error);
+  }
 }
 
 /**
@@ -17,8 +22,12 @@ export async function getComment(req: Request, res: Response) {
  * @param return object: { id: string, text: string, taskId: string, createdAt: string, updatedAt: string }
  */
 export async function postComment(req: Request, res: Response) {
-  const comment = await db.comments.add(req.body);
-  res.status(201).send(comment);
+  try {
+    const comment = await db.comments.add(req.body);
+    res.status(201).send(comment);
+  } catch (error: any) {
+    logger('postComment', 'error', error.message);
+  }
 }
 
 /**
@@ -28,11 +37,15 @@ export async function postComment(req: Request, res: Response) {
  * @param return object: { id: string, text: string, taskId: string, createdAt: string, updatedAt: string }
  */
 export async function updateComment(req: Request, res: Response) {
-  const comment = await db.comments.updateComment({
-    ...req.body,
-    id: req.params.id,
-  });
-  res.status(201).send(comment);
+  try {
+    const comment = await db.comments.updateComment({
+      ...req.body,
+      id: req.params.id,
+    });
+    res.status(201).send(comment);
+  } catch (error: any) {
+    logger('updateComment', 'error', error.message);
+  }
 }
 
 /**
@@ -41,6 +54,10 @@ export async function updateComment(req: Request, res: Response) {
  * @param return object: { id: string, text: stringa taskId: string, createdAt: string, updatedAt: string }
  */
 export async function deleteComment(req: Request, res: Response) {
-  const comment = await db.comments.remove(req.params.id);
-  res.status(201).send(comment);
+  try {
+    const comment = await db.comments.remove(req.params.id);
+    res.status(201).send(comment);
+  } catch (error: any) {
+    logger('deleteComment', 'error', error.message);
+  }
 }

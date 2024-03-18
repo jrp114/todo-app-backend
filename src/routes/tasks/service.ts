@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import db from '../../database/db';
+import logger from '../../helpers/logger';
 
 /**
  * Add a new task
@@ -16,7 +17,8 @@ export async function addTask(req: Request, res: Response) {
     }
     const task = await db.tasks.add(req.body);
     res.status(201).send(task);
-  } catch (err) {
+  } catch (err: any) {
+    logger('addTask', 'error', err);
     res.status(500).send('Error adding task');
   }
 }
@@ -27,29 +29,36 @@ export async function addTask(req: Request, res: Response) {
  * @param return object: { id: string, name: string, description: string, tags: string, position: number, projectId: string }
  */
 export async function updateTask(req: Request, res: Response) {
-  const task = await db.task(async (t) => {
-    if (req.body.origin !== req.body.taskListId) {
-      // we need the rest of the tasks within the same task list to move order up by one
-      await t.tasks.movePosition(req.body.position, req.body.taskListId);
-      return t.tasks.updateTask({
-        ...req.body,
-        position: req.body.position || 0,
-      });
-    } else {
-      if (req.body.originalPosition > req.body.position) {
-        // we need the rest of the tasks within the same projectId to move order up by one
+  try {
+    const task = await db.task(async (t) => {
+      if (req.body.origin !== req.body.taskListId) {
+        // we need the rest of the tasks within the same task list to move order up by one
         await t.tasks.movePosition(req.body.position, req.body.taskListId);
+        return t.tasks.updateTask({
+          ...req.body,
+          position: req.body.position || 0,
+        });
       } else {
-        // we need the rest of the tasks within the same projectId to move order down by one
-        await t.tasks.movePositionDown(req.body.position, req.body.taskListId);
+        if (req.body.originalPosition > req.body.position) {
+          // we need the rest of the tasks within the same projectId to move order up by one
+          await t.tasks.movePosition(req.body.position, req.body.taskListId);
+        } else {
+          // we need the rest of the tasks within the same projectId to move order down by one
+          await t.tasks.movePositionDown(
+            req.body.position,
+            req.body.taskListId,
+          );
+        }
+        return t.tasks.updateTask({
+          ...req.body,
+          position: req.body.position || 0,
+        });
       }
-      return t.tasks.updateTask({
-        ...req.body,
-        position: req.body.position || 0,
-      });
-    }
-  });
-  res.status(201).send(task);
+    });
+    res.status(201).send(task);
+  } catch (err: any) {
+    logger('updateTask', 'error', err);
+  }
 }
 
 /**
@@ -58,6 +67,10 @@ export async function updateTask(req: Request, res: Response) {
  * @param return object: { id: string, name: string, description: string, tags: string, position: number, projectId: string }
  */
 export async function deleteTask(req: Request, res: Response) {
-  const task = await db.tasks.remove(req.params.id);
-  res.status(201).send(task);
+  try {
+    const task = await db.tasks.remove(req.params.id);
+    res.status(201).send(task);
+  } catch (err: any) {
+    logger('deleteTask', 'error', err);
+  }
 }
