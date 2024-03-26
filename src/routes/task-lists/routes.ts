@@ -1,27 +1,27 @@
 import express, { Request, Response } from 'express';
 import authorize from '../../helpers/authorize';
 import {
-  createTaskList,
-  filterTaskListsData,
-  getTaskListsData,
-} from './service';
+  createTaskListController,
+  filterTaskListsDataController,
+  getTaskListsDataController,
+} from './controller';
 
 const router = express.Router();
 
 router.route('/').post(authorize(), async (req: Request, res: Response) => {
-  createTaskList(req, res);
+  createTaskListController(req, res);
 });
 
 router
   .route('/tasks')
   .get(authorize(), async (req: Request, res: Response) =>
-    getTaskListsData(req, res),
+    getTaskListsDataController(req, res),
   );
 
 router
   .route('/tasks/filter')
   .get(authorize(), async (req: Request, res: Response) =>
-    filterTaskListsData(req, res),
+    filterTaskListsDataController(req, res),
   );
 
 export default router;

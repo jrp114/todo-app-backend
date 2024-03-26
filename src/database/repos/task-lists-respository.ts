@@ -52,7 +52,6 @@ export default class TaskListsRepository {
   }
 
   async createTaskList(data: any): Promise<TaskLists> {
-    console.log('data', data);
     return this.db.one(
       this.pgp.helpers.insert(data, this.insertCS) + ' RETURNING *',
     );

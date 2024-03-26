@@ -1,14 +1,14 @@
 import express, { Request, Response } from 'express';
-import { addUser, login } from './service';
+import { addUserController, loginController } from './controller';
 
 const router = express.Router();
 
 router
   .route('/')
-  .post(async (req: Request, res: Response) => addUser(req, res));
+  .post(async (req: Request, res: Response) => addUserController(req, res));
 
 router
   .route('/login')
-  .post(async (req: Request, res: Response) => login(req, res));
+  .post(async (req: Request, res: Response) => loginController(req, res));
 
 export default router;
