@@ -38,6 +38,7 @@ export async function createTaskListController(req: Request, res: Response) {
       req.body.name,
       req.body.description,
       req.body.userId,
+      req.body.projectId,
     );
     res.status(201).send(result);
   } catch (error: any) {

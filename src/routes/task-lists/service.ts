@@ -33,11 +33,13 @@ export async function createTaskList(
   name: string,
   description: string,
   userId: string,
+  projectId: string,
 ) {
   const response = await db.taskLists.createTaskList({
     name,
     description,
     userId,
+    projectId,
   });
   await db.taskListMembers.add({
     userId,
